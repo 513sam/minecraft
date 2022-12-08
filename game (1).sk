@@ -1,0 +1,542 @@
+#게임시작시 플레이어 모두 경기장으로 이동/경기장 약 3개
+#5초후 시작
+#정해진위치에서 랜던한 곳에 상자 생성
+#죽을시 관전자
+#마지막 사람이 남을시 플레이어 수 <=1로 감지하여 승자선출
+#10분후 작은경기장으로 모두 이동,살아남은 플레이어 발광효과
+
+#경기장:300x300(경계 사용가능)
+#작은 경기장:80x80
+#제한시간 10분,데스매치 시간 10분
+#몬스터 소환X
+#나오는템:검,활,화살16개,음식,갑옷,낚싯대,라이터,물양동이
+#조합 불가능
+#블럭캐기,설치 불가능
+
+
+
+
+#rule
+#wait 10 minutes
+
+command /hg [<string>]:
+	trigger:
+		if arg 1 is "setting":
+			#gamerule
+			execute console command "/gamerule commandBlockOutput false"
+			execute console command "/gamerule doDaylightCycle false"
+			execute console command "/gamerule doEntityDrops false"
+			execute console command "/gamerule doFireTick false"
+			execute console command "/gamerule doMobLoot false"
+			execute console command "/gamerule doMobSpawning false"
+			execute console command "/gamerule doTileDrops false"
+			execute console command "/gamerule doWeatherCycle false"
+			execute console command "/gamerule fallDamage true"
+			execute console command "/gamerule keepInventory false"
+			execute console command "/gamerule logAdminCommands false"
+			execute console command "/gamerule maxEntityCramming 2000"
+			execute console command "/gamerule mobGriefing false"
+			execute console command "/gamerule naturalRegeneration true"
+			execute console command "/gamerule sendCommandFeedback false"
+			execute console command "/gamerule showDeathMessages false"
+			execute console command "/gamerule spawnRadius 0"
+			execute console command "/gamerule sendCommandFeedback false"
+			execute console command "/gamerule doImmediateRespawn true"
+			execute console command "/difficulty peaceful"
+			execute console command "/time set 20000"
+			execute console command "/bossbar remove minecraft:timer"
+			execute console command "/bossbar add timer ""타이머"""
+			execute console command "/bossbar set minecraft:timer players @a"
+			execute console command "/bossbar set minecraft:timer visible false"	
+			execute console command "/bossbar set minecraft:timer max 500"
+			execute console command "/bossbar set minecraft:timer style notched_10"
+			execute console command "/bossbar set minecraft:timer value 500"							
+			execute console command "/spawnpoint @a -5806.615 99 188.661"
+			execute console command "/clear @a"
+			execute console command "/kill @a"
+			
+			execute console command "/gamemode adventure @a"
+			execute console command "/worldborder center -5806 187"
+			
+			set {게임진행} to false
+			set {join.%all players%} to false
+			set {참가자} to 0
+			
+				
+			execute console command "/setblock -5809 131 185 air"
+			execute console command "/setblock -5807 131 184 air"		
+			execute console command "/setblock -5810 131 187 air"
+			execute console command "/setblock -5809 131 189 air"
+			execute console command "/setblock -5807 131 190 air"
+			execute console command "/setblock -5805 131 189 air"
+			execute console command "/setblock -5804 131 187 air"
+			execute console command "/setblock -5805 131 185 air"
+			execute console command "/setblock -5811 122 192 air"
+			execute console command "/setblock -5811 118 186 air"
+			execute console command "/setblock -5805 117 189 air"
+			execute console command "/setblock -5805 117 186 air"
+			execute console command "/setblock -5807 117 186 air"
+			execute console command "/setblock -5800 118 185 air"
+			execute console command "/setblock -5799 114 189 air"
+			execute console command "/setblock -5770 128 214 air"
+			execute console command "/setblock -5763 128 214 air"
+			execute console command "/setblock -5753 127 222 air"
+			execute console command "/setblock -5770 95 221 air"
+			execute console command "/setblock -5795 63 229 air"
+			execute console command "/setblock -5822 71 232 air"
+			execute console command "/setblock -5851 87 209 air"
+			execute console command "/setblock -5855 90 148 air"
+			execute console command "/setblock -5806 96 129 air"
+			execute console command "/setblock -5813 95 133 air"
+			execute console command "/setblock -5793 94 135 air"
+			execute console command "/setblock -5774 102 130 air"
+			execute console command "/setblock -5757 114 133 air"
+			execute console command "/setblock -5750 114 135 air"
+			execute console command "/setblock -5750 114 137 air"
+			execute console command "/setblock -5754 95 162 air"
+			execute console command "/setblock -5766 136 216 air"
+			execute console command "/setblock -5766 132 216 air"
+			execute console command "/setblock -5766 132 211 air"
+			execute console command "/setblock -5779 95 197 air"
+			execute console command "/setblock -5809 118 189 air"
+			execute console command "/setblock -5859 109 176 air"
+			execute console command "/setblock -5754 99 146 air"
+			execute console command "/setblock -5820 100 219 air"
+			execute console command "/setblock -5807 130 187 air"
+		
+		
+		if arg 1 is "start":
+			heal all players
+			send title "게임시작까지 : 3" to all players for 1 seconds
+			wait 1 seconds
+			send title "게임시작까지 : 2" to all players for 1 seconds
+			wait 1 seconds
+			send title "게임시작까지 : 1" to all players for 1 seconds
+			wait 1 seconds	
+			set {게임진행} to true
+			execute console command "/tp @a -5806.528 131 187.533"
+			execute console command "/worldborder set 130 2"
+			execute console command "/difficulty hard"
+			execute console command "/bossbar set minecraft:timer players @a"
+			execute console command "/bossbar set minecraft:timer visible true"
+			set {남은시간} to 600
+			tem()
+			execute console command "/setblock -5807 131 184 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()		
+			execute console command "/setblock -5809 131 185 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()				
+			execute console command "/setblock -5810 131 187 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()				
+			execute console command "/setblock -5809 131 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5807 131 190 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 131 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5804 131 187 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 131 185 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5811 122 192 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5811 118 186 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 117 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 117 186 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5807 117 186 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5800 118 185 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()		
+			execute console command "setblock -5799 114 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5770 128 214 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5763 128 214 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5753 127 222 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "setblock -5770 95 221 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5795 63 229 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5822 71 232 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5851 87 209 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5855 90 148 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5806 96 129 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5813 95 133 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5793 94 135 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5774 102 130 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5757 114 133 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5750 114 135 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5750 114 137 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5754 95 162 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5766 136 216 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5766 132 216 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5766 132 211 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5779 95 197 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5809 118 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5859 109 176 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5754 99 146 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5820 100 219 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+
+		if arg 1 is "join":
+			if {join.%event-player%} is false:
+				add 1 to {참가자}
+				message "참가되었습니다"
+				set {join.%event-player%} to true
+			if 	{join.%event-player%} is true:
+				message "이미 참가하셨습니다"
+	
+	
+	
+	
+	
+every 1 seconds:	
+	if {게임진행} is true:
+		
+		subtract 1 from {남은시간}
+		execute console command "/bossbar set minecraft:timer name ""타이머 %{남은시간}%"""
+		if {참가자} = 1:
+			execute console command "/게임종료"	
+		
+		if {남은시간} = 400:
+			food()
+			execute console command "/setblock -5807 130 187 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			message "음식이 도착했습니다" to all players
+		if {남은시간} = 300:
+			message "상자가 리필되었습니다" to all players
+			execute console command "/setblock -5809 131 185 air"
+			execute console command "/setblock -5807 131 184 air"		
+			execute console command "/setblock -5810 131 187 air"
+			execute console command "/setblock -5809 131 189 air"
+			execute console command "/setblock -5807 131 190 air"
+			execute console command "/setblock -5805 131 189 air"
+			execute console command "/setblock -5804 131 187 air"
+			execute console command "/setblock -5805 131 185 air"
+			execute console command "/setblock -5811 122 192 air"
+			execute console command "/setblock -5811 118 186 air"
+			execute console command "/setblock -5805 117 189 air"
+			execute console command "/setblock -5805 117 186 air"
+			execute console command "/setblock -5807 117 186 air"
+			execute console command "/setblock -5800 118 185 air"
+			execute console command "/setblock -5799 114 189 air"
+			execute console command "/setblock -5770 128 214 air"
+			execute console command "/setblock -5763 128 214 air"
+			execute console command "/setblock -5753 127 222 air"
+			execute console command "/setblock -5770 95 221 air"
+			execute console command "/setblock -5795 63 229 air"
+			execute console command "/setblock -5822 71 232 air"
+			execute console command "/setblock -5851 87 209 air"
+			execute console command "/setblock -5855 90 148 air"
+			execute console command "/setblock -5806 96 129 air"
+			execute console command "/setblock -5813 95 133 air"
+			execute console command "/setblock -5793 94 135 air"
+			execute console command "/setblock -5774 102 130 air"
+			execute console command "/setblock -5757 114 133 air"
+			execute console command "/setblock -5750 114 135 air"
+			execute console command "/setblock -5750 114 137 air"
+			execute console command "/setblock -5754 95 162 air"
+			execute console command "/setblock -5766 136 216 air"
+			execute console command "/setblock -5766 132 216 air"
+			execute console command "/setblock -5766 132 211 air"
+			execute console command "/setblock -5779 95 197 air"
+			execute console command "/setblock -5809 118 189 air"
+			execute console command "/setblock -5859 109 176 air"
+			execute console command "/setblock -5754 99 146 air"
+			execute console command "/setblock -5820 100 219 air"
+			wait 0.1 seconds
+			tem()
+			execute console command "/setblock -5807 131 184 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()		
+			execute console command "/setblock -5809 131 185 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()				
+			execute console command "/setblock -5810 131 187 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()				
+			execute console command "/setblock -5809 131 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5807 131 190 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 131 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5804 131 187 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 131 185 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5811 122 192 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5811 118 186 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 117 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5805 117 186 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5807 117 186 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()			
+			execute console command "/setblock -5800 118 185 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()		
+			execute console command "setblock -5799 114 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5770 128 214 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5763 128 214 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5753 127 222 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "setblock -5770 95 221 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5795 63 229 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5822 71 232 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5851 87 209 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5855 90 148 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5806 96 129 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5813 95 133 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5793 94 135 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5774 102 130 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5757 114 133 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5750 114 135 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5750 114 137 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5754 95 162 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5766 136 216 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5766 132 216 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5766 132 211 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5779 95 197 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5809 118 189 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5859 109 176 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5754 99 146 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+			tem()
+			execute console command "/setblock -5820 100 219 chest{Items:[{Slot:1b,id:""%{아이템-slot1}%"",Count:1b},{Slot:2b,id:""%{아이템-slot2}%"",Count:1b},{Slot:3b,id:""%{아이템-slot3}%"",Count:1b},{Slot:4b,id:""%{아이템-slot4}%"",Count:1b},{Slot:5b,id:""%{아이템-slot5}%"",Count:1b},{Slot:6b,id:""%{아이템-slot6}%"",Count:1b},{Slot:7b,id:""%{아이템-slot7}%"",Count:1b},{Slot:8b,id:""%{아이템-slot8}%"",Count:1b},{Slot:9b,id:""%{아이템-slot9}%"",Count:1b},{Slot:10b,id:""%{아이템-slot10}%"",Count:1b},{Slot:11b,id:""%{아이템-slot11}%"",Count:1b},{Slot:12b,id:""%{아이템-slot12}%"",Count:1b},{Slot:13b,id:""%{아이템-slot13}%"",Count:1b},{Slot:14b,id:""%{아이템-slot14}%"",Count:1b},{Slot:15b,id:""%{아이템-slot15}%"",Count:1b},{Slot:16b,id:""%{아이템-slot16}%"",Count:1b},{Slot:17b,id:""%{아이템-slot17}%"",Count:1b},{Slot:18b,id:""%{아이템-slot18}%"",Count:1b},{Slot:19b,id:""%{아이템-slot19}%"",Count:1b},{Slot:20b,id:""%{아이템-slot20}%"",Count:1b},{Slot:21b,id:""%{아이템-slot21}%"",Count:1b},{Slot:22b,id:""%{아이템-slot22}%"",Count:1b},{Slot:23b,id:""%{아이템-slot23}%"",Count:1b},{Slot:24b,id:""%{아이템-slot24}%"",Count:1b},{Slot:25b,id:""%{아이템-slot25}%"",Count:1b},{Slot:26b,id:""%{아이템-slot26}%"",Count:1b}]}"
+		if {남은시간} = 150:
+			loop all players:
+				if loop-player's gamemode is adventure:
+					execute console command "/effect give %loop-player% glowing 150"
+		
+command /게임종료:
+	trigger:
+		
+		loop all players:
+			if loop-player's gamemode is adventure:
+				add  "%loop-player% " to  {승자::*}
+			send title "생존자는 '%{승자::*}%' 입니다" with subtitle "축하드립니다" to all players for 5 seconds
+			delete {승자::*}
+			wait 1 seconds				
+			
+			execute console command "/hg setting"
+		set {참가자} to 0
+			
+				
+every 0.1 seconds:
+	execute console command "/bossbar set minecraft:timer value %{남은시간}%"
+	
+on death:
+	if {게임진행} is true:
+		if victim is player:
+			cancel event
+			message "%attacker% -> %victim%" to all players
+			execute console command "/gamemode spectator %victim%"	
+			subtract 1 from {참가자}
+		
+		
+
+
+		
+function tem():
+	set {item_list::*} to "ender_pearl" , "wooden_sword" ,  "stone_sword" ,  "iron_sword" , "leather_helmet" , "leather_chestplace" , "leather_leggings" , "leather_boots" , "chainmail_helmet" , "chainmail_chestplate" , "chainmail_leggings" , "chainmail_boots" , "iron_helmet" , "iron_chestplate" , "iron_leggings" , "iron_boots" , "diamond_helmet" , "diamond_chestplate" , "diamond_leggings" , "diamond_boots" , "golden_helmet" , "golden_chestplate" , "golden_leggings" , "golden_boots" , "golden_shovel" , "golden_sword" , "golden_pickaxe" , "golden_axe" , "golden_hoe" , "bow" , "arrow" , "fishing_rod" , "spyglass" , "bread" , "cooked_porkchop" , "golden_apple" , "pufferfish" , "cooked_beef" , "poisonous_potato" and "cooked_mutton"
+	set {아이템-slot1} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot1} to "air"
+	set {아이템-slot2} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot2} to "air"
+	set {아이템-slot3} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot3} to "air"
+	set {아이템-slot4} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot4} to "air"
+	set {아이템-slot5} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot5} to "air"
+	set {아이템-slot6} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot6} to "air"
+	set {아이템-slot7} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot7} to "air"
+	set {아이템-slot8} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot8} to "air"
+	set {아이템-slot9} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot9} to "air"
+	set {아이템-slot10} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot10} to "air"
+	set {아이템-slot11} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot11} to "air"
+	set {아이템-slot12} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot12} to "air"
+	set {아이템-slot13} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot13} to "air"
+	set {아이템-slot14} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot14} to "air"
+	set {아이템-slot15} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot15} to "air"
+	set {아이템-slot16} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot16} to "air"
+	set {아이템-slot17} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot17} to "air"
+	set {아이템-slot18} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot18} to "air"
+	set {아이템-slot19} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot19} to "air"
+	set {아이템-slot20} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot20} to "air"
+	set {아이템-slot21} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot21} to "air"
+	set {아이템-slot22} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot22} to "air"
+	set {아이템-slot23} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot23} to "air"
+	set {아이템-slot24} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot24} to "air"
+	set {아이템-slot25} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot25} to "air"
+	set {아이템-slot26} to random element of {item_list::*}
+	chance of 80%:
+		set {아이템-slot26} to "air"
+	
+
+
+function food():
+	set {food_list::*} to  "bread" , "cooked_porkchop" , "golden_apple" , "cooked_beef" and "cooked_mutton"
+	set {아이템-slot1} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot1} to "air"
+	set {아이템-slot2} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot2} to "air"
+	set {아이템-slot3} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot3} to "air"
+	set {아이템-slot4} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot4} to "air"
+	set {아이템-slot5} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot5} to "air"
+	set {아이템-slot6} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot6} to "air"
+	set {아이템-slot7} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot7} to "air"
+	set {아이템-slot8} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot8} to "air"
+	set {아이템-slot9} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot9} to "air"
+	set {아이템-slot10} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot10} to "air"
+	set {아이템-slot11} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot11} to "air"
+	set {아이템-slot12} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot12} to "air"
+	set {아이템-slot13} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot13} to "air"
+	set {아이템-slot14} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot14} to "air"
+	set {아이템-slot15} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot15} to "air"
+	set {아이템-slot16} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot16} to "air"
+	set {아이템-slot17} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot17} to "air"
+	set {아이템-slot18} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot18} to "air"
+	set {아이템-slot19} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot19} to "air"
+	set {아이템-slot20} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot20} to "air"
+	set {아이템-slot21} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot21} to "air"
+	set {아이템-slot22} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot22} to "air"
+	set {아이템-slot23} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot23} to "air"
+	set {아이템-slot24} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot24} to "air"
+	set {아이템-slot25} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot25} to "air"
+	set {아이템-slot26} to random element of {food_list::*}
+	chance of 50%:
+		set {아이템-slot26} to "air"
